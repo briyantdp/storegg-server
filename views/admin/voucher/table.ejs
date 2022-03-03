@@ -1,0 +1,71 @@
+<table id="example2" class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Nama Game</th>
+      <th>Gambar</th>
+      <th>Kategori</th>
+      <th>Nominal</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(let i = 0; i < voucher.length; i++) { %>
+    <tr>
+      <td><%= i + 1 %></td>
+      <td><%= voucher[i].name %></td>
+      <td>
+        <img
+          src="http://localhost:3000/images/uploads/<%= voucher[i].image %>"
+          alt="<%= voucher[i].name %>"
+          width="40%"
+        />
+      </td>
+      <td><%= voucher[i].category.name %></td>
+      <td>
+        <% voucher[i].nominals.map(nominal => { %>
+        <span class="badge badge-pill badge-warning">
+          <%= nominal.coinName %> <%= nominal.coinQty %>
+        </span>
+        <% }); %>
+      </td>
+      <td>
+        <% if(voucher[i].status === "Y") { %>
+        <span class="badge badge-pill badge-success"> Aktif </span>
+        <% } else { %>
+        <span class="badge badge-pill badge-danger"> Belum Aktif </span>
+        <% } %>
+      </td>
+      <td>
+        <form
+          action="/voucher/status/<%= voucher[i]._id %>?_method=PUT"
+          method="post"
+        >
+          <button class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+            <% if(voucher[i].status === "Y") { %> Matikan <% } else { %>
+            Hidupkan <% } %>
+          </button>
+        </form>
+        <a
+          href="/voucher/edit/<%= voucher[i]._id %>"
+          class="btn btn-warning btn-sm my-2"
+        >
+          <i class="fas fa-pencil-alt"></i>
+          Ubah
+        </a>
+        <form
+          action="/voucher/delete/<%= voucher[i]._id %>?_method=DELETE"
+          method="post"
+        >
+          <button class="btn btn-danger btn-sm">
+            <i class="fas fa-trash-alt"></i>
+            Hapus
+          </button>
+        </form>
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>

@@ -1,0 +1,63 @@
+<table id="example2" class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Jenis Pembayaran</th>
+      <th>Data Pengguna</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(let i = 0; i < payment.length; i++) { %>
+    <tr>
+      <td><%= i + 1 %></td>
+      <td><%= payment[i].type %></td>
+      <td>
+        <% payment[i].dataPayments.map(data => { %>
+        <span class="badge badge-pill badge-warning">
+          <%= data.name %> - <%= data.bankName %> - <%= data.bankNumber %>
+        </span>
+        <% }) %>
+      </td>
+      <td>
+        <% if(payment[i].status === "Y") { %>
+        <span class="badge badge-pill badge-success"> Aktif </span>
+        <% } else { %>
+        <span class="badge badge-pill badge-danger"> Belum Aktif </span>
+        <% } %>
+      </td>
+      <td>
+        <form
+          action="/payment/status/<%= payment[i]._id %>?_method=PUT"
+          method="post"
+          style="display: inline-block"
+        >
+          <button class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+            <% if(payment[i].status === "Y") { %> Matikan <% } else { %>
+            Hidupkan <% } %>
+          </button>
+        </form>
+        <form
+          action="/payment/delete/<%= payment[i]._id %>?_method=DELETE"
+          method="post"
+          style="display: inline-block"
+        >
+          <a
+            href="/payment/edit/<%= payment[i]._id %>"
+            class="btn btn-warning btn-sm"
+          >
+            <i class="fas fa-pencil-alt mr-2"></i>
+            Ubah
+          </a>
+          <button class="btn btn-danger btn-sm">
+            <i class="fas fa-trash-alt mr-2"></i>
+            Hapus
+          </button>
+        </form>
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>

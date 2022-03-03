@@ -1,0 +1,96 @@
+<table id="example2" class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Nama Game</th>
+      <th>Item</th>
+      <th>Total Harga</th>
+      <th>Nama Pemain</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(let i = 0; i < transaction.length; i++) { %>
+    <tr>
+      <td><%= i + 1 %></td>
+      <td>
+        <img
+          src="http://localhost:3000/images/uploads/<%= transaction[i].historyVoucherTopUp.image %>"
+          alt="<%= transaction[i].historyVoucherTopUp.gameName %>"
+          style="width: 50px"
+        />
+        <br />
+        <%= transaction[i].historyVoucherTopUp.gameName %>
+        <br />
+        <%= transaction[i].historyVoucherTopUp.category %>
+      </td>
+      <td>
+        <span class="badge badge-pill badge-warning">
+          <%= transaction[i].historyVoucherTopUp.coinName %> <%=
+          transaction[i].historyVoucherTopUp.coinQty %>
+        </span>
+      </td>
+      <td><%= transaction[i].value %></td>
+      <td>
+        <%= transaction[i].player.name ? transaction[i].player.name : "-" %>
+      </td>
+      <td>
+        <% if(transaction[i].status === "success") { %>
+        <span class="badge badge-pill badge-success"> Aktif </span>
+        <% } else if(transaction[i].status === "failed") { %>
+        <span class="badge badge-pill badge-danger"> Belum Aktif </span>
+        <% } else { %>
+        <span class="badge badge-pill badge-warning"> Pending </span>
+        <% } %>
+      </td>
+      <td>
+        <% if(transaction[i].status === "success") { %>
+        <form
+          action="/transaction/status/<%= transaction[i]._id %>/?status=failed&_method=PUT"
+          method="post"
+          style="display: inline-block"
+        >
+          <button class="btn btn-danger btn-sm">
+            <i class="fa fa-times-circle" aria-hidden="true"></i>
+            Tolak
+          </button>
+        </form>
+        <% } else if(transaction[i].status === "failed") { %>
+        <form
+          action="/transaction/status/<%= transaction[i]._id %>/?status=success&_method=PUT"
+          method="post"
+          style="display: inline-block"
+        >
+          <button class="btn btn-success btn-sm">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Terima
+          </button>
+        </form>
+        <% } else { %>
+        <form
+          action="/transaction/status/<%= transaction[i]._id %>/?status=failed&_method=PUT"
+          method="post"
+          style="display: inline-block"
+        >
+          <button class="btn btn-danger btn-sm">
+            <i class="fa fa-times-circle" aria-hidden="true"></i>
+            Tolak
+          </button>
+        </form>
+        <form
+          action="/transaction/status/<%= transaction[i]._id %>/?status=success&_method=PUT"
+          method="post"
+          style="display: inline-block"
+        >
+          <button class="btn btn-success btn-sm">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Terima
+          </button>
+        </form>
+        <% } %>
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>
